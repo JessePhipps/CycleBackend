@@ -19,8 +19,8 @@ export default () => {
     sendSuggestion: ({ body, set }) => {
       // mail options
       const mailOptions = {
-        from: "bolivarcyclingtest@gmail.com",
-        to: "bolivarcyclingtest@gmail.com",
+        from: process.env.EMAIL_FROM,
+        to: process.env.EMAIL_TO,
         subject: "New Route Suggestion from Bolivar Cycling Website!",
         attachments: [
           {

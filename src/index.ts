@@ -52,7 +52,12 @@ const app = new Elysia() //
         },
       },
     })
-  ).use(cors())
+  )
+  .use(
+    cors({
+      origin: ["https://cyclebackend-dn4hl3ql4q-uc.a.run.app"],
+    })
+  )
 
   .group("/v1", (app) =>
     app.use(initGetGeo(db)).use(initEmail()).use(initAuth(db))
@@ -84,7 +89,6 @@ const app = new Elysia() //
       //use GET on /user/checksession to check if session if valid
       .use(initEditGeo(db)) //list of crud endpoints
       .use(initUsers(db))
-
   )
   .get("/*", async () => {
     return Bun.file("./public/index.html");

@@ -52,7 +52,7 @@ const app = new Elysia() //
         },
       },
     })
-  )
+  ).use(cors())
 
   .group("/v1", (app) =>
     app.use(initGetGeo(db)).use(initEmail()).use(initAuth(db))

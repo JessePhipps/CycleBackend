@@ -12,8 +12,9 @@ export default (db: Database) => {
     },
 
     //deprecated
-    validateUser: ({ body, set }) => {//
-      console.log("validating")
+    validateUser: ({ body, set }) => {
+      //
+      console.log("validating");
       const query = db.prepare(
         `SELECT (username,password) FROM user WHERE username = $username`
       );

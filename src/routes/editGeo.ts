@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import initEditGeoController from "../controllers/geoEditController";
 import Database from "bun:sqlite";
-
+//api endpoints for routes table access requiring auth
 export default (db: Database) => {
   const GeoController = initEditGeoController(db);
 

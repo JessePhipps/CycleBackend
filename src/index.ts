@@ -1,3 +1,6 @@
+//this is the main bootstrapping file for the backend
+//
+
 import { Elysia } from "elysia";
 import swagger from "@elysiajs/swagger";
 import cors from "@elysiajs/cors";
@@ -14,6 +17,7 @@ import initEmail from "./routes/email";
 import initEditGeo from "./routes/editGeo";
 import { staticPlugin } from "@elysiajs/static";
 export const db = initDB();
+
 export const adapter = new BunSQLiteAdapter(db, {
   user: "user",
   session: "session",
@@ -32,13 +36,15 @@ export const lucia = new Lucia(adapter, {
 }); //
 
 const app = new Elysia() //
+  //used to statically serve the built client files in /public
   .use(
     staticPlugin({
       prefix: "/",
       alwaysStatic: true,
     })
   )
-
+  //provides automatically generated documentation
+  //open docs by going to /v1/docs in browser
   .use(
     swagger({
       //
@@ -53,19 +59,22 @@ const app = new Elysia() //
       },
     })
   )
+  //specifies that this is the intended origin that communicates with the server
   .use(
     cors({
       origin: ["https://cyclebackend-dn4hl3ql4q-uc.a.run.app"],
     })
   )
-
+  //routes that that don't require authorization
   .group("/v1", (app) =>
     app.use(initGetGeo(db)).use(initEmail()).use(initAuth(db))
-  ) //routes that that don't require authorization
-
+  )
+  //routes that require auth
   .group("/a1", (app) =>
     app
+      //middleware that updates the user object
       .use(isAuthenticated)
+      //checks if the user is authorized before allowing access
       .on("beforeHandle", async ({ set, user, session }) => {
         if (!session) {
           set.status = 401;
@@ -85,40 +94,15 @@ const app = new Elysia() //
           };
         }
       })
-      //group of endpoints
+      //group of guarded endpoitns
       //use GET on /user/checksession to check if session if valid
       .use(initEditGeo(db)) //list of crud endpoints
       .use(initUsers(db))
-  )
+  ) //all other requests are assumed to be for the client files
   .get("/*", async () => {
     return Bun.file("./public/index.html");
   })
-
+  //specifies port number
   .listen(3000);
 
 console.log(`API is running at ${app.server?.hostname}:${app.server?.port}`);
-
-// .on("beforeHandle", async ({ cookie, set }) => {
-//   const cookieHeader = context.request.headers.get("Cookie") ?? "";
-//   const sessionId = lucia.readSessionCookie(cookieHeader);
-//   console.log(cookie, "cookie");
-//   console.log(sessionId, "sessionid");
-//   if (!sessionId) {
-//     set.status = 401;
-//     return {
-//       success: false,
-//       message: "Unauthorized",
-//       data: null,
-//     };
-//   }
-//   const { session, user } = await lucia.validateSession(sessionId);
-//   console.log(session, user, "sesion, user");
-//   if (!user) {
-//     set.status = 401;
-//     return {
-//       success: false,
-//       message: "Unauthorized",
-//       data: null,
-//     };
-//   }
-// })

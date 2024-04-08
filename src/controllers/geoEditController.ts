@@ -1,6 +1,7 @@
 import Database from "bun:sqlite";
 import fetch from "node-fetch";
-
+//all the methods used to edit the routes table
+//must be authorized to use these methods
 export default (db: Database) => {
   return {
     

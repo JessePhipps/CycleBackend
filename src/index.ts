@@ -62,17 +62,18 @@ const app = new Elysia() //
       },
     })
   )
+  .use(ip())
+
   //specifies that this is the intended origin that communicates with the server
   .use(
     cors({
       origin: ["https://cyclebackend-dn4hl3ql4q-uc.a.run.app"],
     })
   )
-  .use(ip())
-  .use(rateLimit())
+
   //routes that that don't require authorization
   .group("/v1", (app) =>
-    app.use(initGetGeo(db)).use(initEmail()).use(initAuth(db))
+    app.use(initGetGeo(db)).use(rateLimit()).use(initEmail()).use(initAuth(db))
   )
   //routes that require auth
   .group("/a1", (app) =>

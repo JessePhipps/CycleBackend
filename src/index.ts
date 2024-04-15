@@ -63,7 +63,6 @@ const app = new Elysia() //
     })
   )
   .use(ip())
- 
 
   //specifies that this is the intended origin that communicates with the server
   // .use(
@@ -76,9 +75,10 @@ const app = new Elysia() //
   .group("/v1", (app) =>
     app
       .use(initGetGeo(db))
+      //limit requests to email and auth routes to prevent brute force/spamming
       .use(
         rateLimit({
-          scoping: 'local',
+          scoping: "local",
           max: 20,
         })
       )

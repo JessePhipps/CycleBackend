@@ -2,6 +2,7 @@
 //
 
 import { Elysia } from "elysia";
+import { rateLimit } from "elysia-rate-limit";
 import swagger from "@elysiajs/swagger";
 import cors from "@elysiajs/cors";
 import initDB from "./database";
@@ -16,6 +17,8 @@ import auth from "./routes/auth";
 import initEmail from "./routes/email";
 import initEditGeo from "./routes/editGeo";
 import { staticPlugin } from "@elysiajs/static";
+import { ip } from "elysia-ip";
+
 export const db = initDB();
 
 export const adapter = new BunSQLiteAdapter(db, {
@@ -65,6 +68,8 @@ const app = new Elysia() //
       origin: ["https://cyclebackend-dn4hl3ql4q-uc.a.run.app"],
     })
   )
+  .use(ip())
+  .use(rateLimit())
   //routes that that don't require authorization
   .group("/v1", (app) =>
     app.use(initGetGeo(db)).use(initEmail()).use(initAuth(db))

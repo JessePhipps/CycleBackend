@@ -17,7 +17,7 @@ import auth from "./routes/auth";
 import initEmail from "./routes/email";
 import initEditGeo from "./routes/editGeo";
 import { staticPlugin } from "@elysiajs/static";
-import { ip } from '../node_modules/elysia-ip/src'
+import { ip } from "../node_modules/elysia-ip/src";
 
 export const db = initDB();
 
@@ -63,6 +63,7 @@ const app = new Elysia() //
     })
   )
   .use(ip())
+ 
 
   //specifies that this is the intended origin that communicates with the server
   // .use(
@@ -70,16 +71,19 @@ const app = new Elysia() //
   //     origin: ["https://cyclebackend-dn4hl3ql4q-uc.a.run.app"],
   //   })
   // ).use(rateLimiter)
-    .onRequest(({ rateLimiter, ip, set }) => {
-      if(rateLimiter.check(ip)) {
-          set.status = 420
-          return 'Enhance your calm'
-      }
-  })
 
   //routes that that don't require authorization
   .group("/v1", (app) =>
-    app.use(initGetGeo(db)).use(initEmail()).use(initAuth(db))
+    app
+      .use(initGetGeo(db))
+      .use(
+        rateLimit({
+          scoping: 'local',
+          max: 20,
+        })
+      )
+      .use(initEmail())
+      .use(initAuth(db))
   )
   //routes that require auth
   .group("/a1", (app) =>

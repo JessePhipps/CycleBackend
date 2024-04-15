@@ -19,6 +19,7 @@ export default () => {
   return {
     sendSuggestion: ({ body, set }) => {
       // mail options
+      console.log(body)
       const mailOptions = {
         from: process.env.EMAIL_FROM,
         to: process.env.EMAIL_TO,

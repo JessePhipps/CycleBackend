@@ -79,7 +79,6 @@ const app = new Elysia() //
       .use(
         rateLimit({
           scoping: "local",
-          max: 20,
         })
       )
       .use(initEmail())

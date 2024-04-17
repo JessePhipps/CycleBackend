@@ -2,6 +2,7 @@
 //
 
 import { Elysia } from "elysia";
+import { rateLimit } from "elysia-rate-limit";
 import swagger from "@elysiajs/swagger";
 import cors from "@elysiajs/cors";
 import initDB from "./database";
@@ -16,6 +17,8 @@ import auth from "./routes/auth";
 import initEmail from "./routes/email";
 import initEditGeo from "./routes/editGeo";
 import { staticPlugin } from "@elysiajs/static";
+import { ip } from "../node_modules/elysia-ip/src";
+
 export const db = initDB();
 
 export const adapter = new BunSQLiteAdapter(db, {
@@ -59,15 +62,27 @@ const app = new Elysia() //
       },
     })
   )
+  .use(ip())
+
   //specifies that this is the intended origin that communicates with the server
-  .use(
-    cors({
-      origin: ["https://cyclebackend-dn4hl3ql4q-uc.a.run.app"],
-    })
-  )
+  // .use(
+  //   cors({
+  //     origin: ["https://cyclebackend-dn4hl3ql4q-uc.a.run.app"],
+  //   })
+  // ).use(rateLimiter)
+
   //routes that that don't require authorization
   .group("/v1", (app) =>
-    app.use(initGetGeo(db)).use(initEmail()).use(initAuth(db))
+    app
+      .use(initGetGeo(db))
+      //limit requests to email and auth routes to prevent brute force/spamming
+      .use(
+        rateLimit({
+          scoping: "local",
+        })
+      )
+      .use(initEmail())
+      .use(initAuth(db))
   )
   //routes that require auth
   .group("/a1", (app) =>

@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { brotliDecompressSync } from "zlib";
-
+//handles the form submission from /routesuggestion
+//uses nodemailer to send route suggestion via email
 export default () => {
   //create transporter
   const transporter = nodemailer.createTransport({
@@ -19,8 +20,8 @@ export default () => {
     sendSuggestion: ({ body, set }) => {
       // mail options
       const mailOptions = {
-        from: "bolivarcyclingtest@gmail.com",
-        to: "bolivarcyclingtest@gmail.com",
+        from: process.env.EMAIL_FROM,
+        to: process.env.EMAIL_TO,
         subject: "New Route Suggestion from Bolivar Cycling Website!",
         attachments: [
           {

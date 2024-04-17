@@ -1,6 +1,6 @@
 import { Elysia } from 'elysia';
 import initEmailController from '../controllers/emailController';
-
+//api endpoint for route suggestions
 
 export default() =>
 { 

@@ -1,10 +1,11 @@
 import { Elysia } from "elysia";
 import initUserController from "../controllers/userController";
 import Database from "bun:sqlite";
-
+//checksession used by frontend to evaluate users login status
+//this can be found in src/router/index.js
+// all other routes deprecated
 export default (db: Database) => {
   const UserController = initUserController(db);
-//deprecated
   return new Elysia({ prefix: "/user" })
     // .get("/", UserController.getUserList)
     // .get("/:id", UserController.getUserById)

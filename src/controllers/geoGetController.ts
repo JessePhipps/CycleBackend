@@ -1,28 +1,9 @@
 import Database from "bun:sqlite";
 import fetch from "node-fetch";
-
+//retrieve data from routes table
+//no auth required
 export default (db: Database) => {
   return {
-    // getElevation: async ({ body, set }) => {
-    //   const length = Object.keys(body).length;
-    //   let reqString = `https://api.open-elevation.com/api/v1/lookup?locations=`;
-    //   reqString += `${body[0].latitude},${body[0].longitude}`;
-    //   for (let i = 1; i < length; i++) {
-    //     //console.log(body[i], body[i].latitude, body[i].longitude)
-    //     reqString += `|${body[i].latitude},${body[i].longitude}`;
-    //   }
-    //   console.log(reqString);
-    //   // let res = await fetch(`https://maps.googleapis.com/maps/api/elevation/json?path=${body.lat2},%2C${body.long2}|-34.397,150.644&units=imperial&mode=bicycling&key=AIzaSyApfskDsY7qidZT_vJMhfEUeZwXcqQqo-A`);
-    //   let res = await fetch(reqString);
-
-    //   const response = await res.json();
-    //   set.status = 200;
-    //   // const response = await res.json()
-    //   // console.log(response)
-    //   return new Response(JSON.stringify({ response }), {
-    //     headers: { "Content-Type": "application/json" },
-    //   });
-    // },
 
     getGeoList: ({ set }) => {
       const startTime = performance.now();

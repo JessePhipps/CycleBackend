@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia'
 import initGetGeoController from '../controllers/geoGetController';
 import Database from 'bun:sqlite';
-
+//api endpoints for route db access not requiring auth
 
 export default (db: Database) => {
     const GeoController = initGetGeoController(db);
@@ -9,7 +9,6 @@ export default (db: Database) => {
     return new Elysia({ prefix: '/geo'})
         .get('/', GeoController.getGeoList)
         .get('/:id', GeoController.getGeoById)
-        // .post('/e', GeoController.getElevation)
         
         
 }

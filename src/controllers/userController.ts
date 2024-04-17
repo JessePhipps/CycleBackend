@@ -1,5 +1,5 @@
 import Database from "bun:sqlite";
-
+//unused, get users table data
 export default (db: Database) => {
   return {
     checksession: async ({ set }) => {

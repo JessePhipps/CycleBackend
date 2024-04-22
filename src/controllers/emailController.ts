@@ -11,15 +11,30 @@ export default () => {
     secure: process.env.EMAIL_SECURE,
     auth: {
       user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
+      pass: process.env.EMAIL_PASS,
     },
   });
 
-
   return {
+    validateEmail: ({ body, set }) => {
+      if (body.email == process.env.EMAIL_USER) {
+        set.status = 200;
+        return new Response(
+          JSON.stringify({ valid: true, message: "correct email" }),
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      } else {
+        set.status = 500;
+        return new Response(JSON.stringify({ message: "success!" }), {
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+    },
     sendSuggestion: ({ body, set }) => {
       // mail options
-      console.log(body)
+      console.log(body);
       const mailOptions = {
         from: process.env.EMAIL_FROM,
         to: process.env.EMAIL_TO,
@@ -32,8 +47,11 @@ export default () => {
         ],
         text:
           "A new route has been submitted for your review! \nName of route: " +
-          body.name + "\nPoints of interest: " + body.poi + "\nContact email: " + body.email,
-
+          body.name +
+          "\nPoints of interest: " +
+          body.poi +
+          "\nContact email: " +
+          body.email,
       };
       transporter.sendMail(mailOptions);
       set.status = 200;

@@ -1,5 +1,6 @@
 import Database from "bun:sqlite";
-//unused, get users table data
+import { Argon2id } from "oslo/password";
+import { lucia } from "../index";
 export default (db: Database) => {
   return {
     checksession: async ({ set }) => {
@@ -10,7 +11,45 @@ export default (db: Database) => {
         },
       });
     },
+    checkPWCode:async ({ body, set }) => {
+      set.status = 200;
 
+      return new Response(JSON.stringify({ message: "passed" }), {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    changePassword:async ({ body, set }) => {
+      //generate code
+      //send code to email
+      //await
+      const username: string | null = body.username ?? null;
+      const password: string | null = body.password ?? null;
+
+      if (!password || password.length < 6 || password.length > 255) {
+        set.status = 400;
+        return new Response(JSON.stringify({ message: "invalid password" }), {
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      const hashedPassword = await new Argon2id().hash(password);
+      try {
+        db.prepare(
+          'UPDATE user SET password = ? WHERE username = ?'
+        ).run(hashedPassword, body.username);
+
+        set.status = 200;
+        return new Response(
+          JSON.stringify({ success: true, message: "success!" }),
+        );
+      } catch (e) {
+        set.status = 500;
+        return new Response(JSON.stringify({ message: e.message }), {
+          headers: { "Content-Type": "application/json" },
+        });
+      } 
+    },
     //deprecated
     validateUser: ({ body, set }) => {
       //

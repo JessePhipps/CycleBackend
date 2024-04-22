@@ -73,8 +73,10 @@ export default (db: Database) => {
         }
       );
     },
-
+    
+    
     signupUser: async ({ body, set }) => {
+      //count 1
       try {
         const username: string | null = body.username ?? null;
         if (

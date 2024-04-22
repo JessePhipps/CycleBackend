@@ -17,7 +17,7 @@ export default () => {
 
   return {
     validateEmail: ({ body, set }) => {
-      if (body.email == process.env.EMAIL_USER) {
+      if (body.email === process.env.EMAIL_USER) {
         set.status = 200;
         return new Response(
           JSON.stringify({ valid: true, message: "correct email" }),
@@ -27,9 +27,12 @@ export default () => {
         );
       } else {
         set.status = 500;
-        return new Response(JSON.stringify({ message: "success!" }), {
-          headers: { "Content-Type": "application/json" },
-        });
+        return new Response(
+          JSON.stringify({ valid: false, message: "incorrect email" }),
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
       }
     },
     sendSuggestion: ({ body, set }) => {

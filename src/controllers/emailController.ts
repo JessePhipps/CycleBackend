@@ -19,21 +19,21 @@ export default () => {
     validateEmail: ({ body, set }) => {
       if (body.email === process.env.EMAIL_USER) {
         set.status = 200;
+
         return new Response(
           JSON.stringify({ valid: true, message: "correct email" }),
           {
             headers: { "Content-Type": "application/json" },
           }
         );
-      } else {
-        set.status = 500;
-        return new Response(
-          JSON.stringify({ valid: false, message: "incorrect email" }),
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
       }
+      set.status = 400;
+      return new Response(
+        JSON.stringify({ valid: false, message: "incorrect email" }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     },
     sendSuggestion: ({ body, set }) => {
       // mail options

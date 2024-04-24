@@ -75,53 +75,75 @@ export default (db: Database) => {
     },
 
     signupUser: async ({ body, set }) => {
-      try {
-        const username: string | null = body.username ?? null;
-        if (
-          !username ||
-          username.length < 3 ||
-          username.length > 31 ||
-          !/^[a-z0-9_-]+$/.test(username)
-        ) {
-          set.status = 400;
-          return new Response(JSON.stringify({ message: "invalid username" }), {
+      //count 1
+      //query db and make sure that there is no existing admin account
+      const query = db.query(`SELECT COUNT(*) FROM user;`);
+      const result = query.all();
+      if (result[0]["COUNT(*)"] >= 1) {
+        set.status = 400;
+        return new Response(
+          JSON.stringify({ message: "admin account already exists" }),
+          {
             headers: { "Content-Type": "application/json" },
-          });
-        }
-        const password: string | null = body.password ?? null;
-        if (!password || password.length < 6 || password.length > 255) {
-          set.status = 400;
-          return new Response(JSON.stringify({ message: "invalid password" }), {
-            headers: { "Content-Type": "application/json" },
-          });
-        }
-
-        const hashedPassword = await new Argon2id().hash(password);
-        const userId = generateId(15);
-
+          }
+        );
+      } else {
         try {
-          db.prepare(
-            "INSERT INTO user (id, username, password) VALUES(?, ?, ?)"
-          ).run(userId, username, hashedPassword);
+          const username: string | null = body.username ?? null;
+          if (
+            !username ||
+            username.length < 3 ||
+            username.length > 31 ||
+            !/^[a-z0-9_-]+$/.test(username)
+          ) {
+            set.status = 400;
+            return new Response(
+              JSON.stringify({ message: "invalid username" }),
+              {
+                headers: { "Content-Type": "application/json" },
+              }
+            );
+          }
+          const password: string | null = body.password ?? null;
+          if (!password || password.length < 6 || password.length > 255) {
+            set.status = 400;
+            return new Response(
+              JSON.stringify({ message: "invalid password" }),
+              {
+                headers: { "Content-Type": "application/json" },
+              }
+            );
+          }
 
-          const session = await lucia.createSession(userId, {});
-          set.status = 200;
-          return new Response(
-            JSON.stringify({ success: true, message: "success!" }),
-            {
-              headers: {
-                "Set-Cookie": lucia.createSessionCookie(session.id).serialize(),
-              },
-            }
-          );
+          const hashedPassword = await new Argon2id().hash(password);
+          const userId = generateId(15);
+
+          try {
+            db.prepare(
+              "INSERT INTO user (id, username, password) VALUES(?, ?, ?)"
+            ).run(userId, username, hashedPassword);
+
+            const session = await lucia.createSession(userId, {});
+            set.status = 200;
+            return new Response(
+              JSON.stringify({ success: true, message: "success!" }),
+              {
+                headers: {
+                  "Set-Cookie": lucia
+                    .createSessionCookie(session.id)
+                    .serialize(),
+                },
+              }
+            );
+          } catch (e) {
+            set.status = 500;
+            return new Response(JSON.stringify({ message: e.message }), {
+              headers: { "Content-Type": "application/json" },
+            });
+          }
         } catch (e) {
-          set.status = 500;
-          return new Response(JSON.stringify({ message: e.message }), {
-            headers: { "Content-Type": "application/json" },
-          });
+          console.log(e, "e");
         }
-      } catch (e) {
-        console.log(e, "e");
       }
     },
   };

@@ -36,7 +36,7 @@ export default (db: Database) => {
           to: process.env.EMAIL_TO,
           subject: "New admin password",
 
-          text: "This is your new password" + +"\n" + `${password}`,
+          text: `This is your new password \n${password}`,
         };
         transporter.sendMail(mailOptions);
         // // //

@@ -6,14 +6,16 @@ import Database from "bun:sqlite";
 // all other routes deprecated
 export default (db: Database) => {
   const UserController = initUserController(db);
-  return new Elysia({ prefix: "/user" })
-    // .get("/", UserController.getUserList)
-    // .post("/", UserController.createUser)
-    // .put("/:id", UserController.updateUser)
-    // .delete("/:id", UserController.removeUserById)
-    // .post("/:username", UserController.validateUser)
-    .post("/checksession", UserController.checksession)
-    .post("/checkpwcode", UserController.checkPWCode)
-    
-    .post("/forgotpassword", UserController.changePassword);
+  return (
+    new Elysia({ prefix: "/user" })
+      //.get("/", UserController.getUserList)
+      // .post("/", UserController.createUser)
+      // .put("/:id", UserController.updateUser)
+      // .delete("/:id", UserController.removeUserById)
+      // .post("/:username", UserController.validateUser)
+      .post("/checksession", UserController.checksession)
+      .post("/checkpwcode", UserController.checkPWCode)
+
+    // .post("/forgotpassword", UserController.changePassword)
+  );
 };

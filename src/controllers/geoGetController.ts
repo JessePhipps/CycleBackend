@@ -6,15 +6,10 @@ export default (db: Database) => {
   return {
 
     getGeoList: ({ set }) => {
-      const startTime = performance.now();
-      console.log("running query", startTime)
 
       const query = db.query(`SELECT * FROM routes;`); //create database structure and edit ..change table 'maps?'
       const result = query.all();
       set.status = 200; //OK status
-      const endTime = performance.now();
-      const elapsedTime = endTime - startTime;
-      console.log("query complete", endTime, "final time = ", elapsedTime); 
       return new Response(JSON.stringify({ routes: result }), {
         headers: { "Content-Type": "application/json" },
       });

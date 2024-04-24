@@ -79,8 +79,7 @@ export default (db: Database) => {
       //query db and make sure that there is no existing admin account
       const query = db.query(`SELECT COUNT(*) FROM user;`);
       const result = query.all();
-      console.log(result["COUNT(*)"]);
-      if (result["COUNT(*)"] >= 1) {
+      if (result[0]["COUNT(*)"] >= 1) {
         set.status = 400;
         return new Response(
           JSON.stringify({ message: "admin account already exists" }),

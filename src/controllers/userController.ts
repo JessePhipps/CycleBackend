@@ -20,7 +20,7 @@ export default (db: Database) => {
         },
       });
     },
-    changePassword:async ({ body, set }) => {
+    changePassword: async ({ body, set }) => {
       //generate code
       //send code to email
       //await

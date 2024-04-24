@@ -1,10 +1,12 @@
 import { Elysia } from "elysia";
 import initEmailController from "../controllers/emailController";
+import Database from "bun:sqlite";
+
 //api endpoint for route suggestions
 
-export default () => {
+export default (db: Database) => {
   // initialze email controller
-  const emailController = initEmailController();
+  const emailController = initEmailController(db);
 
   // define route for email
   return (

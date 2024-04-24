@@ -62,7 +62,7 @@ const app = new Elysia() //
       },
     })
   )
-  .use(ip())
+  .use(ip())//used by rateLimit to determine client IP
 
   //specifies that this is the intended origin that communicates with the server
   // .use(
@@ -81,7 +81,7 @@ const app = new Elysia() //
           scoping: "local",
         })
       )
-      .use(initEmail())
+      .use(initEmail(db))
       .use(initAuth(db))
   )
   //routes that require auth

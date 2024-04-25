@@ -1,8 +1,6 @@
 import nodemailer from "nodemailer";
-import { brotliDecompressSync } from "zlib";
 import Database from "bun:sqlite";
 import { Argon2id } from "oslo/password";
-import { lucia } from "../index";
 
 //handles the form submission from /routesuggestion
 //uses nodemailer to send route suggestion via email
@@ -93,11 +91,19 @@ export default (db: Database) => {
           "\nContact email: " +
           body.email,
       };
-      transporter.sendMail(mailOptions);
-      set.status = 200;
-      return new Response(JSON.stringify({ message: "success!" }), {
-        headers: { "Content-Type": "application/json" },
-      });
+      try {
+        transporter.sendMail(mailOptions);
+        set.status = 200;
+        return new Response(JSON.stringify({ message: "success!" }), {
+          headers: { "Content-Type": "application/json" },
+        });
+      } catch (e) {
+        set.status = 500;
+        console.log(e);
+        return new Response(JSON.stringify({ message: "error" }), {
+          headers: { "Content-Type": "application/json" },
+        });
+      }
     },
   };
 };

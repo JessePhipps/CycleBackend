@@ -60,7 +60,8 @@ const app = new Elysia() //
         },
       },
     })
-  ) //used by rateLimit to determine client IP
+  )
+  .use(cors())
 
   //specifies that this is the intended origin that communicates with the server
   // .use(

@@ -61,7 +61,6 @@ const app = new Elysia() //
       },
     })
   )
-  .use(cors())
 
   //specifies that this is the intended origin that communicates with the server
   // .use(
@@ -75,7 +74,6 @@ const app = new Elysia() //
     app
       .use(initGetGeo(db))
       //limit requests to email and auth routes to prevent brute force/spamming
-      // .use(ip())
       .use(
         rateLimit({
           scoping: "local",

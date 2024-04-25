@@ -18,7 +18,7 @@ import initEmail from "./routes/email";
 import initEditGeo from "./routes/editGeo";
 import { staticPlugin } from "@elysiajs/static";
 import { ip } from "../node_modules/elysia-ip/src";
-
+import { ip } from 'elysia-ip' 
 export const db = initDB();
 
 export const adapter = new BunSQLiteAdapter(db, {
@@ -61,8 +61,7 @@ const app = new Elysia() //
         },
       },
     })
-  )
-  .use(ip())//used by rateLimit to determine client IP
+  ) //used by rateLimit to determine client IP
 
   //specifies that this is the intended origin that communicates with the server
   // .use(
@@ -76,11 +75,6 @@ const app = new Elysia() //
     app
       .use(initGetGeo(db))
       //limit requests to email and auth routes to prevent brute force/spamming
-      .use(
-        rateLimit({
-          scoping: "local",
-        })
-      )
       .use(initEmail(db))
       .use(initAuth(db))
   )

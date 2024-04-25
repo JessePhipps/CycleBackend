@@ -20,7 +20,6 @@ export default (db: Database) => {
 
   return {
     validateEmail: async ({ body, set }) => {
-      console.log(process.env.EMAIL_USER);
       if (body.email === process.env.EMAIL_USER) {
         const length = 10;
         const characters =

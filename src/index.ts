@@ -17,7 +17,7 @@ import auth from "./routes/auth";
 import initEmail from "./routes/email";
 import initEditGeo from "./routes/editGeo";
 import { staticPlugin } from "@elysiajs/static";
-import { ip } from "../node_modules/elysia-ip/src";
+import { ip } from "elysia-ip";
 export const db = initDB();
 
 export const adapter = new BunSQLiteAdapter(db, {
@@ -74,7 +74,14 @@ const app = new Elysia() //
     app
       .use(initGetGeo(db))
       //limit requests to email and auth routes to prevent brute force/spamming
-      .use(initEmail())
+      // .use(ip())
+      .use(
+        rateLimit({
+          scoping: "local",
+          duration: 100 * 1000,
+        })
+      )
+      .use(initEmail(db))
       .use(initAuth(db))
   )
   //routes that require auth

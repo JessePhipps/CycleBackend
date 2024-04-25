@@ -1,10 +1,11 @@
 import nodemailer from "nodemailer";
+import { brotliDecompressSync } from "zlib";
 import Database from "bun:sqlite";
 import { Argon2id } from "oslo/password";
 
 //handles the form submission from /routesuggestion
 //uses nodemailer to send route suggestion via email
-export default () => {
+export default (db: Database) => {
   //create transporter
   const transporter = nodemailer.createTransport({
     service: process.env.EMAIL_SERVICE,
@@ -18,7 +19,7 @@ export default () => {
   });
 
   return {
-    /* validateEmail: async ({ body, set }) => {
+    validateEmail: async ({ body, set }) => {
       if (body.email === process.env.EMAIL_USER) {
         const length = 10;
         const characters =
@@ -70,7 +71,7 @@ export default () => {
           }
         );
       }
-    }, */
+    },
     sendSuggestion: ({ body, set }) => {
       // mail options
       const mailOptions = {

@@ -56,7 +56,6 @@ export default (db: Database) => {
     //deprecated
     validateUser: ({ body, set }) => {
       //
-      console.log("validating");
       const query = db.prepare(
         `SELECT (username,password) FROM user WHERE username = $username`
       );
@@ -85,7 +84,6 @@ export default (db: Database) => {
       });
     },
     getUserById: ({ params: { id }, set }) => {
-      console.log("in get user");
       const query = db.query(`SELECT * FROM user WHERE id = $id;`);
       const result = query.get({ $id: id });
       set.status = 200;
@@ -128,7 +126,6 @@ export default (db: Database) => {
           ["$" + a]: body[a],
         };
       }
-      console.log(updateObj);
       let result = query.run({ ...updateObj, $id: id });
       set.status = 200;
 

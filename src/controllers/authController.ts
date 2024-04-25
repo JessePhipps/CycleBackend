@@ -1,3 +1,8 @@
+/*
+this is the auth controller. it includes the login function for the admin. it validates
+the password and creates a session for the user. it also includes the function to sign 
+up a user. 
+*/
 import { Argon2id } from "oslo/password";
 import { lucia } from "../index";
 import { generateId } from "lucia";

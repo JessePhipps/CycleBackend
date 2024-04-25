@@ -1,3 +1,5 @@
+/* implements api endpoints for the getGeo controller */
+
 import { Elysia } from 'elysia'
 import initGetGeoController from '../controllers/geoGetController';
 import Database from 'bun:sqlite';

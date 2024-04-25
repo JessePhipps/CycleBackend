@@ -1,3 +1,6 @@
+/* this is the user controller. It implements the logic to check the session of the user for 
+authentication, as well as change the password. it includes functions to get and validate users.
+it also includes logic to delete and update users.  */
 import Database from "bun:sqlite";
 import { Argon2id } from "oslo/password";
 import { lucia } from "../index";

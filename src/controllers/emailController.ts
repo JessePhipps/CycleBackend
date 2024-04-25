@@ -1,3 +1,6 @@
+/* this is the email controller. it defines the transporter that is used by nodemailer 
+to send emails. it includes the email for the password reset function. it includes the sendSuggestion funciton, which
+generates an email from the route suggestion form */
 import nodemailer from "nodemailer";
 import { brotliDecompressSync } from "zlib";
 import Database from "bun:sqlite";

@@ -1,3 +1,5 @@
+/* implements api endpoints for the email controller */
+
 import { Elysia } from "elysia";
 import initEmailController from "../controllers/emailController";
 import Database from "bun:sqlite";

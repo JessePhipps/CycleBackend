@@ -1,3 +1,5 @@
+/* implements api endpoints for the editGeo controller */
+
 import { Elysia } from "elysia";
 import initEditGeoController from "../controllers/geoEditController";
 import Database from "bun:sqlite";

@@ -1,3 +1,5 @@
+/* provides api endpoints for the auth controller */
+
 import { db } from "../index";
 import { Argon2id } from "oslo/password";
 import { lucia } from "../index";

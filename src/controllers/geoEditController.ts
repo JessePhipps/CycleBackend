@@ -1,3 +1,6 @@
+/* This is the geoEdit controller. It handles the logic for editing the routes in the database. 
+This is done using the sqlite database and id of the route that is being edited */
+
 import Database from "bun:sqlite";
 import fetch from "node-fetch";
 //all the methods used to edit the routes table

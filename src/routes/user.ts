@@ -1,3 +1,5 @@
+/* implements api endpoints for the user controller */
+
 import { Elysia } from "elysia";
 import initUserController from "../controllers/userController";
 import Database from "bun:sqlite";

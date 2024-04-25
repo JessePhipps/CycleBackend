@@ -1,3 +1,5 @@
+/* This is the geoGet controller. It implements the logic to pull the cycling routes 
+from the database  */
 import Database from "bun:sqlite";
 import fetch from "node-fetch";
 //retrieve data from routes table

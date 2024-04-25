@@ -18,7 +18,6 @@ import initEmail from "./routes/email";
 import initEditGeo from "./routes/editGeo";
 import { staticPlugin } from "@elysiajs/static";
 import { ip } from "../node_modules/elysia-ip/src";
-import { ip } from 'elysia-ip' 
 export const db = initDB();
 
 export const adapter = new BunSQLiteAdapter(db, {

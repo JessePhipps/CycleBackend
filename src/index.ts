@@ -74,7 +74,7 @@ const app = new Elysia() //
     app
       .use(initGetGeo(db))
       //limit requests to email and auth routes to prevent brute force/spamming
-      .use(initEmail(db))
+      .use(initEmail())
       .use(initAuth(db))
   )
   //routes that require auth

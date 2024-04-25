@@ -4,7 +4,7 @@ import { Argon2id } from "oslo/password";
 
 //handles the form submission from /routesuggestion
 //uses nodemailer to send route suggestion via email
-export default (db: Database) => {
+export default () => {
   //create transporter
   const transporter = nodemailer.createTransport({
     service: process.env.EMAIL_SERVICE,
@@ -18,7 +18,7 @@ export default (db: Database) => {
   });
 
   return {
-    validateEmail: async ({ body, set }) => {
+    /* validateEmail: async ({ body, set }) => {
       if (body.email === process.env.EMAIL_USER) {
         const length = 10;
         const characters =
@@ -70,7 +70,7 @@ export default (db: Database) => {
           }
         );
       }
-    },
+    }, */
     sendSuggestion: ({ body, set }) => {
       // mail options
       const mailOptions = {

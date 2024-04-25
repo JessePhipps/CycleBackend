@@ -49,7 +49,6 @@ export default (db: Database) => {
           ["$" + a]: body[a],
         };
       }
-      console.log(updateObj);
       let result = query.run({ ...updateObj, $id: id });
       set.status = 200;
 
